@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarun Singh Chauhan — AI Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--void:#080A0F;--surface:#0D1117;--surface2:#131A24;--surface3:#1C2333;
+--cyan:#00F5FF;--cyan-dim:#00C4CC;--violet:#7B2FBE;--amber:#FFB800;
+--white:#F0F4FF;--muted:#6B7A99;--border:#1E2940;
+}
+html{scroll-behavior:smooth}
+body{background:var(--void);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:none}
+#cursor{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s;mix-blend-mode:screen}
+#cursor-ring{position:fixed;width:32px;height:32px;border:1px solid var(--cyan);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.15s ease;opacity:0.5}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:var(--violet);border-radius:2px}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid transparent;transition:all 0.3s}
+nav.scrolled{border-bottom:1px solid var(--border);backdrop-filter:blur(20px);background:rgba(8,10,15,0.9)}
+.nav-logo{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--cyan);letter-spacing:0.1em}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-size:0.8rem;color:var(--muted);text-decoration:none;letter-spacing:0.05em;transition:color 0.2s;font-family:'JetBrains Mono',monospace}
+.nav-links a:hover{color:var(--cyan)}
+.nav-status{display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;font-family:'JetBrains Mono',monospace;color:var(--muted)}
+.status-dot{width:6px;height:6px;background:#22C55E;border-radius:50%;animation:pulse-green 2s infinite}
+@keyframes pulse-green{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,0.4)}50%{opacity:0.8;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+
+#hero{min-height:100vh;display:flex;align-items:center;padding:0 3rem;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr 420px;gap:4rem;align-items:center;width:100%;max-width:1200px;margin:0 auto}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:0.3;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 100%)}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.orb-1{width:400px;height:400px;background:rgba(123,47,190,0.15);top:-10%;right:10%;animation:float1 8s ease-in-out infinite}
+.orb-2{width:300px;height:300px;background:rgba(0,245,255,0.08);bottom:10%;left:5%;animation:float2 10s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,40px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-30px)}}
+
+.hero-left{z-index:2}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--cyan);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.75rem}
+.eyebrow::before{content:'';display:inline-block;width:40px;height:1px;background:var(--cyan)}
+.hero-name{font-size:clamp(2.5rem,5vw,4.5rem);font-weight:900;line-height:1;letter-spacing:-0.03em;margin-bottom:0.5rem}
+.name-line{display:block}
+.name-line.glitch{color:var(--cyan);position:relative;display:inline-block}
+.name-line.glitch::before,.name-line.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;height:100%}
+.name-line.glitch::before{color:var(--violet);clip-path:polygon(0 0,100% 0,100% 45%,0 45%);animation:glitch-top 3s infinite 0.5s}
+.name-line.glitch::after{color:var(--amber);clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);animation:glitch-bottom 3s infinite 1s}
+@keyframes glitch-top{0%,90%,100%{transform:translate(0)}92%{transform:translate(-2px,1px)}95%{transform:translate(2px,-1px)}}
+@keyframes glitch-bottom{0%,90%,100%{transform:translate(0)}93%{transform:translate(2px,1px)}96%{transform:translate(-2px,-1px)}}
+
+.hero-title{font-size:1rem;color:var(--muted);margin-bottom:2rem;font-weight:400;letter-spacing:0.05em}
+.hero-subtitle{font-size:1.1rem;color:rgba(240,244,255,0.7);line-height:1.7;margin-bottom:2.5rem;max-width:520px}
+.hero-subtitle span{color:var(--cyan)}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{padding:0.75rem 2rem;background:transparent;border:1px solid var(--cyan);color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;position:relative;overflow:hidden;cursor:none;display:inline-block}
+.btn-primary::before{content:'';position:absolute;inset:0;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform 0.3s}
+.btn-primary:hover::before{transform:scaleX(1)}
+.btn-primary:hover{color:var(--void)}
+.btn-primary span{position:relative;z-index:1}
+.btn-ghost{padding:0.75rem 2rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;cursor:none;display:inline-block}
+.btn-ghost:hover{border-color:var(--violet);color:var(--white)}
+.stats-bar{display:flex;gap:2rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap}
+.stat-num{font-size:1.8rem;font-weight:700;color:var(--white);font-family:'JetBrains Mono',monospace;line-height:1}
+.stat-num .accent{color:var(--cyan)}
+.stat-label{font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.25rem}
+
+.chat-panel{background:var(--surface);border:1px solid var(--border);position:relative;z-index:2;display:flex;flex-direction:column;height:540px}
+.chat-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem}
+.chat-avatar{width:32px;height:32px;background:linear-gradient(135deg,var(--violet),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--void);flex-shrink:0}
+.chat-info h4{font-size:0.85rem;font-weight:600;margin-bottom:2px}
+.chat-info p{font-size:0.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.chat-live{margin-left:auto;display:flex;align-items:center;gap:0.4rem;font-size:0.65rem;font-family:'JetBrains Mono',monospace;color:#22C55E}
+.chat-live-dot{width:5px;height:5px;background:#22C55E;border-radius:50%;animation:pulse-green 2s infinite}
+.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.75rem}
+.chat-messages::-webkit-scrollbar{width:2px}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--border)}
+.msg{display:flex;gap:0.6rem}
+.msg.user{flex-direction:row-reverse}
+.msg-avatar{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;margin-top:2px}
+.msg-ai .msg-avatar{background:linear-gradient(135deg,var(--violet),var(--cyan));color:var(--void)}
+.msg-user .msg-avatar{background:var(--surface3);color:var(--muted)}
+.msg-bubble{padding:0.6rem 0.85rem;max-width:85%;font-size:0.8rem;line-height:1.6}
+.msg-ai .msg-bubble{background:var(--surface2);border:1px solid var(--border);color:rgba(240,244,255,0.85);border-radius:0 8px 8px 8px}
+.msg-user .msg-bubble{background:linear-gradient(135deg,rgba(123,47,190,0.3),rgba(0,245,255,0.1));border:1px solid rgba(0,245,255,0.2);color:var(--white);border-radius:8px 0 8px 8px}
+.msg-bubble strong{color:var(--cyan)}
+.typing-indicator{display:flex;gap:3px;align-items:center;padding:0.5rem 0}
+.typing-dot{width:5px;height:5px;background:var(--cyan);border-radius:50%;animation:typing 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:0.2s}
+.typing-dot:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,60%,100%{opacity:0.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.chat-pills{padding:0.5rem 1rem;display:flex;gap:0.5rem;flex-wrap:wrap;border-top:1px solid var(--border)}
+.pill{padding:0.3rem 0.75rem;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:0.7rem;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.pill:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,245,255,0.05)}
+.chat-input-area{padding:0.75rem 1rem;border-top:1px solid var(--border);display:flex;gap:0.5rem}
+#chat-input{flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--white);padding:0.6rem 0.85rem;font-family:'JetBrains Mono',monospace;font-size:0.78rem;outline:none;transition:border-color 0.2s}
+#chat-input::placeholder{color:var(--muted)}
+#chat-input:focus{border-color:var(--cyan)}
+#chat-send{padding:0.6rem 1rem;background:var(--cyan);border:none;color:var(--void);font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+#chat-send:hover{background:var(--cyan-dim)}
+
+.sec{padding:6rem 3rem;max-width:1200px;margin:0 auto}
+.section-eyebrow{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--cyan);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.75rem}
+.section-title{font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;letter-spacing:-0.02em;margin-bottom:1rem}
+.section-divider{width:60px;height:1px;background:var(--violet);margin-bottom:3rem}
+
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+@media(max-width:1100px){.projects-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.projects-grid{grid-template-columns:1fr}.hero-grid{grid-template-columns:1fr}.chat-panel{height:400px}#hero{padding:6rem 1.5rem 3rem}nav{padding:1rem 1.5rem}.sec{padding:4rem 1.5rem}.skills-section{padding:4rem 1.5rem}.skills-grid{grid-template-columns:repeat(2,1fr)}}
+.project-card{background:var(--surface);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;transition:all 0.3s}
+.project-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(123,47,190,0.05),rgba(0,245,255,0.05));opacity:0;transition:opacity 0.3s}
+.project-card:hover{border-color:rgba(0,245,255,0.3);transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+.project-card:hover::before{opacity:1}
+.project-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet),var(--cyan));transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+.project-card:hover::after{transform:scaleX(1)}
+.project-num{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--muted);letter-spacing:0.2em;margin-bottom:0.6rem}
+.project-name{font-size:1rem;font-weight:600;margin-bottom:0.6rem;color:var(--white)}
+.project-name span{color:var(--cyan)}
+.project-desc{font-size:0.78rem;color:var(--muted);line-height:1.7;margin-bottom:1rem}
+.project-metrics{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.metric-badge{font-family:'JetBrains Mono',monospace;font-size:0.6rem;padding:0.2rem 0.5rem;background:rgba(0,245,255,0.08);border:1px solid rgba(0,245,255,0.2);color:var(--cyan)}
+.metric-badge.violet{background:rgba(123,47,190,0.15);border-color:rgba(123,47,190,0.4);color:#B48FE8}
+.metric-badge.amber{background:rgba(255,184,0,0.1);border-color:rgba(255,184,0,0.3);color:var(--amber)}
+.project-stack{display:flex;gap:0.3rem;flex-wrap:wrap}
+.stack-tag{font-size:0.6rem;padding:0.18rem 0.45rem;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace}
+
+.skills-section{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 3rem}
+.skills-inner{max-width:1200px;margin:0 auto}
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:3rem}
+.skill-group h4{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--cyan);font-family:'JetBrains Mono',monospace;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border)}
+.skill-item{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0;font-size:0.8rem;color:rgba(240,244,255,0.7)}
+.skill-dot{width:4px;height:4px;background:var(--violet);border-radius:50%;flex-shrink:0}
+
+.exp-timeline{position:relative;padding-left:2rem}
+.exp-timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--cyan),var(--violet),transparent)}
+.exp-item{position:relative;margin-bottom:3rem;padding-left:2rem}
+.exp-item::before{content:'';position:absolute;left:-2.35rem;top:0.35rem;width:8px;height:8px;background:var(--cyan);border-radius:50%;box-shadow:0 0 0 3px rgba(0,245,255,0.15)}
+.exp-period{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:0.4rem}
+.exp-role{font-size:1.1rem;font-weight:600;margin-bottom:0.25rem}
+.exp-company{font-size:0.85rem;color:var(--muted);margin-bottom:1rem}
+.exp-points{list-style:none;display:flex;flex-direction:column;gap:0.6rem}
+.exp-points li{font-size:0.82rem;color:rgba(240,244,255,0.7);line-height:1.6;display:flex;gap:0.6rem}
+.exp-points li::before{content:'→';color:var(--cyan);flex-shrink:0;font-family:'JetBrains Mono',monospace}
+
+.contact-section{text-align:center;padding:8rem 3rem;position:relative;overflow:hidden}
+.contact-section::before{content:'HIRE ME';position:absolute;font-size:20vw;font-weight:900;color:rgba(240,244,255,0.02);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:-0.05em}
+.contact-links{display:flex;justify-content:center;gap:1.5rem;margin-top:2rem;flex-wrap:wrap}
+.contact-link{display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1.5rem;border:1px solid var(--border);color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:0.8rem;transition:all 0.3s;cursor:none}
+.contact-link:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,245,255,0.05)}
+
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.7s cubic-bezier(0.16,1,0.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+#boot-screen{position:fixed;inset:0;background:var(--void);z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.boot-text{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--cyan);text-align:left;width:min(500px,90vw)}
+.boot-line{opacity:0;margin:0.2rem 0;animation:boot-appear 0.3s forwards}
+@keyframes boot-appear{to{opacity:1}}
+.boot-bar{margin-top:2rem;width:min(500px,90vw);height:2px;background:var(--border)}
+.boot-progress{height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--cyan));transition:width 0.1s linear}
+footer{padding:2rem 3rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-text{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div id="boot-screen">
+  <div class="boot-text" id="boot-lines"></div>
+  <div class="boot-bar"><div class="boot-progress" id="boot-prog"></div></div>
+</div>
+
+<nav id="navbar">
+  <div class="nav-logo">TSC://portfolio</div>
+  <div class="nav-links">
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-status"><div class="status-dot"></div>Open to opportunities</div>
+</nav>
+
+<section id="hero">
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="eyebrow">AI Engineer · Generative AI · LLM Systems</div>
+      <h1 class="hero-name">
+        <span class="name-line" style="color:var(--white)">TARUN SINGH</span>
+        <span class="name-line glitch" data-text="CHAUHAN">CHAUHAN</span>
+      </h1>
+      <p class="hero-title">Building production-grade AI systems that actually ship</p>
+      <p class="hero-subtitle">I engineer <span>LLM evaluation frameworks</span>, multi-agent pipelines, and <span>RAG infrastructure</span> — not demos. Every project here runs in production with real metrics.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn-primary"><span>View Projects</span></a>
+        <a href="#contact" class="btn-ghost">Get in Touch</a>
+      </div>
+      <div class="stats-bar">
+        <div class="stat"><div class="stat-num">5<span class="accent">+</span></div><div class="stat-label">Production Projects</div></div>
+        <div class="stat"><div class="stat-num">0.81<span class="accent">κ</span></div><div class="stat-label">Cohen's Kappa</div></div>
+        <div class="stat"><div class="stat-num">60<span class="accent">%</span></div><div class="stat-label">Cost Reduction</div></div>
+        <div class="stat"><div class="stat-num">75<span class="accent">%</span></div><div class="stat-label">Cache Hit Rate</div></div>
+      </div>
+    </div>
+
+    <div class="chat-panel reveal">
+      <div class="chat-header">
+        <div class="chat-avatar">AI</div>
+        <div class="chat-info">
+          <h4>Ask about Tarun</h4>
+          <p>Neural Intelligence · Live</p>
+        </div>
+        <div class="chat-live"><div class="chat-live-dot"></div>LIVE</div>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="msg msg-ai">
+          <div class="msg-avatar">T</div>
+          <div class="msg-bubble">Hey! I'm Tarun's AI assistant. Ask me anything — his projects, skills, experience, or why you should hire him. 🚀</div>
+        </div>
+      </div>
+      <div class="chat-pills">
+        <button class="pill" onclick="askQuestion('What makes Tarun different?')">What makes him different?</button>
+        <button class="pill" onclick="askQuestion('Tell me about his best project')">Best project?</button>
+        <button class="pill" onclick="askQuestion('What is his tech stack?')">Tech stack?</button>
+        <button class="pill" onclick="askQuestion('Is he available for hire?')">Available to hire?</button>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask anything about Tarun..." onkeydown="if(event.key==='Enter')sendChat()">
+        <button id="chat-send" onclick="sendChat()">SEND →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sec" id="projects">
+  <div class="reveal">
+    <div class="section-eyebrow">// Production Systems</div>
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-num">01 / LIVE PROJECT</div>
+      <div class="project-name"><span>CodePulse</span> — AI Cinematic Walkthrough</div>
+      <div class="project-desc">Full-stack AI web app sending code to LLaMA 4 via Groq. Returns a structured ExecutionScript JSON powering line-by-line animated walkthroughs with variable tracking, call stack, and voice narration.</div>
+      <div class="project-metrics">
+        <span class="metric-badge amber">4 ELI5→Senior Levels</span>
+        <span class="metric-badge violet">Zero Hallucination Mode</span>
+        <span class="metric-badge">SVG Narrator Characters</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">Next.js 14</span><span class="stack-tag">TypeScript</span><span class="stack-tag">Groq API</span><span class="stack-tag">LLaMA 4</span><span class="stack-tag">Framer Motion</span><span class="stack-tag">Monaco Editor</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">02 / EVALUATION SYSTEMS</div>
+      <div class="project-name"><span>LLM Evaluation Harness</span> & Red-Teaming</div>
+      <div class="project-desc">Production-grade framework benchmarking GPT-4o vs Claude Sonnet across 50 MMLU prompts. Reduced model regression detection from days to under 4 minutes per CI run with bootstrapped 95% confidence intervals.</div>
+      <div class="project-metrics">
+        <span class="metric-badge amber">Cohen's κ = 0.81</span>
+        <span class="metric-badge">20+ Red-Team Patterns</span>
+        <span class="metric-badge violet">&lt;4min CI Detection</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">LangGraph</span><span class="stack-tag">LangSmith</span><span class="stack-tag">MLflow</span><span class="stack-tag">OpenAI API</span><span class="stack-tag">Anthropic API</span><span class="stack-tag">FastAPI</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">03 / MULTI-AGENT</div>
+      <div class="project-name"><span>Multi-Agent Code Review</span> & Auto-Remediation</div>
+      <div class="project-desc">3-agent LangGraph pipeline (static analysis + OWASP scanner + LLM fix proposals) with enforced per-review cost budgets. Autonomously identified 23 issues including 4 critical vulnerabilities in benchmark testing.</div>
+      <div class="project-metrics">
+        <span class="metric-badge amber">23 Issues Detected</span>
+        <span class="metric-badge violet">4 Critical CVEs Found</span>
+        <span class="metric-badge">12-Pattern OWASP</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">LangGraph</span><span class="stack-tag">OpenRouter</span><span class="stack-tag">FastAPI</span><span class="stack-tag">Docker</span><span class="stack-tag">PostgreSQL</span><span class="stack-tag">Redis</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">04 / RAG INFRASTRUCTURE</div>
+      <div class="project-name"><span>RAG Ops Platform</span> with Drift Detection</div>
+      <div class="project-desc">Production RAG pipeline with Qdrant vector search, cosine similarity drift detection triggering automated re-indexing, and real-time ops dashboard tracking p95/p99 latency SLOs and retrieval quality.</div>
+      <div class="project-metrics">
+        <span class="metric-badge amber">75% Cache Hit Rate</span>
+        <span class="metric-badge">Hit@5 Retrieval Tracking</span>
+        <span class="metric-badge violet">Auto Reindex on Drift</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">Qdrant</span><span class="stack-tag">LangChain</span><span class="stack-tag">FastAPI</span><span class="stack-tag">Redis</span><span class="stack-tag">Chart.js</span><span class="stack-tag">Docker</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">05 / AUTONOMOUS AGENT</div>
+      <div class="project-name"><span>Autonomous Financial</span> Research Agent</div>
+      <div class="project-desc">Tool-augmented autonomous AI agent executing a 4-step structured reasoning chain (Market Context → Financial Analysis → Risk Assessment → Investment Thesis) with per-query LLM cost budget enforcement at $0.50.</div>
+      <div class="project-metrics">
+        <span class="metric-badge amber">60% Cost Reduction</span>
+        <span class="metric-badge violet">SHA-256 Audit Trail</span>
+        <span class="metric-badge">Reports in &lt;60s</span>
+      </div>
+      <div class="project-stack">
+        <span class="stack-tag">FastAPI</span><span class="stack-tag">OpenRouter</span><span class="stack-tag">LangSmith</span><span class="stack-tag">Yahoo Finance API</span><span class="stack-tag">Redis</span><span class="stack-tag">Docker</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="skills-section" id="skills">
+  <div class="skills-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">// Technical Arsenal</div>
+      <h2 class="section-title">What I Build With</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-group">
+        <h4>LLM & GenAI</h4>
+        <div class="skill-item"><div class="skill-dot"></div>OpenAI API</div>
+        <div class="skill-item"><div class="skill-dot"></div>Anthropic API</div>
+        <div class="skill-item"><div class="skill-dot"></div>LangChain</div>
+        <div class="skill-item"><div class="skill-dot"></div>LangGraph</div>
+        <div class="skill-item"><div class="skill-dot"></div>LangSmith</div>
+        <div class="skill-item"><div class="skill-dot"></div>OpenRouter</div>
+        <div class="skill-item"><div class="skill-dot"></div>Prompt Engineering</div>
+        <div class="skill-item"><div class="skill-dot"></div>LLM-as-Judge</div>
+      </div>
+      <div class="skill-group">
+        <h4>Vector & RAG</h4>
+        <div class="skill-item"><div class="skill-dot"></div>Qdrant</div>
+        <div class="skill-item"><div class="skill-dot"></div>Semantic Search</div>
+        <div class="skill-item"><div class="skill-dot"></div>Chunking Strategies</div>
+        <div class="skill-item"><div class="skill-dot"></div>Drift Detection</div>
+        <div class="skill-item"><div class="skill-dot"></div>Hit@k / MRR Metrics</div>
+        <div class="skill-item"><div class="skill-dot"></div>Embedding Models</div>
+      </div>
+      <div class="skill-group">
+        <h4>AI Evaluation</h4>
+        <div class="skill-item"><div class="skill-dot"></div>ROUGE-L</div>
+        <div class="skill-item"><div class="skill-dot"></div>BERTScore</div>
+        <div class="skill-item"><div class="skill-dot"></div>Bootstrap CI</div>
+        <div class="skill-item"><div class="skill-dot"></div>Cohen's Kappa</div>
+        <div class="skill-item"><div class="skill-dot"></div>MLflow</div>
+        <div class="skill-item"><div class="skill-dot"></div>Red-Teaming</div>
+      </div>
+      <div class="skill-group">
+        <h4>Infrastructure</h4>
+        <div class="skill-item"><div class="skill-dot"></div>Python 3.12</div>
+        <div class="skill-item"><div class="skill-dot"></div>FastAPI</div>
+        <div class="skill-item"><div class="skill-dot"></div>Docker</div>
+        <div class="skill-item"><div class="skill-dot"></div>Redis</div>
+        <div class="skill-item"><div class="skill-dot"></div>PostgreSQL</div>
+        <div class="skill-item"><div class="skill-dot"></div>GitHub Actions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec" id="experience">
+  <div class="reveal">
+    <div class="section-eyebrow">// Work History</div>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="exp-timeline reveal">
+    <div class="exp-item">
+      <div class="exp-period">Jun – Aug 2025</div>
+      <div class="exp-role">AI Engineer Intern</div>
+      <div class="exp-company">ZIDIO Development · Remote</div>
+      <ul class="exp-points">
+        <li>Developed AI-powered Python automation pipelines integrating LLM APIs to extract, clean, and process structured data from 5+ sources, reducing downstream data errors by ~35–40%.</li>
+        <li>Built prompt engineering workflows and automated reporting tools using Python and SQL; designed Power BI dashboards surfacing real-time KPIs, saving ~4–5 hours per weekly cycle.</li>
+      </ul>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">Jul – Aug 2024</div>
+      <div class="exp-role">Generative AI & Machine Learning Intern</div>
+      <div class="exp-company">Linux World Pvt. Ltd. · Jaipur</div>
+      <ul class="exp-points">
+        <li>Engineered ML data pipelines and applied generative AI techniques for 2 projects — an NLP chatbot using LLM APIs and a regression-based price predictor — delivering production-ready training datasets.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="contact-section" id="contact">
+  <div class="reveal">
+    <div class="section-eyebrow" style="justify-content:center;display:flex">// Let's Build</div>
+    <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.5rem)">Ready to hire an AI engineer<br>who ships real systems?</h2>
+    <p style="color:var(--muted);margin-top:1rem;font-size:0.95rem">Based in Jaipur, India · Open to remote & relocation</p>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:tarunsinghchauhan088@gmail.com">📧 Email Me</a>
+      <a class="contact-link" href="https://linkedin.com/in/tarunchauhanml" target="_blank">💼 LinkedIn</a>
+      <a class="contact-link" href="https://github.com/TarunSinghChauhan" target="_blank">⚡ GitHub</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-text">© 2026 Tarun Singh Chauhan · AI Engineer</span>
+  <span class="footer-text" style="color:var(--cyan)">Built with precision, not templates.</span>
+</footer>
+
+<script>
+// Cursor
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx-4+'px';cursor.style.top=my-4+'px'});
+function animRing(){rx+=(mx-rx-16)*0.12;ry+=(my-ry-16)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)}
+animRing();
+document.querySelectorAll('a,button,.pill,input').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(3)';ring.style.transform='scale(0.5)';ring.style.opacity='0.8'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='scale(1)';ring.style.opacity='0.5'});
+});
+
+// Boot
+const bootLines=[
+  '> Initializing Neural Forge v3.7.2...',
+  '> Loading AI Engineering protocols...',
+  '> LangGraph agents: ONLINE',
+  '> Qdrant vector store: CONNECTED',
+  '> Redis cache: WARMED (75% hit rate)',
+  '> LLM-as-Judge ensemble: CALIBRATED (κ=0.81)',
+  '> Red-team defenses: ACTIVE',
+  '> Portfolio systems: ALL GREEN',
+  '',
+  "> Welcome to Tarun Singh Chauhan's portfolio."
+];
+const bootEl=document.getElementById('boot-lines'),bootProg=document.getElementById('boot-prog'),bootScreen=document.getElementById('boot-screen');
+let li=0;
+function showNextLine(){
+  if(li<bootLines.length){
+    const d=document.createElement('div');d.className='boot-line';d.style.animationDelay='0s';
+    const l=bootLines[li];
+    d.style.color=l.includes('ONLINE')||l.includes('CONNECTED')||l.includes('ACTIVE')||l.includes('GREEN')||l.includes('WARMED')||l.includes('CALIBRATED')?'#22C55E':'#00F5FF';
+    if(l.includes('portfolio'))d.style.color='#F0F4FF';
+    d.textContent=l;bootEl.appendChild(d);
+    bootProg.style.width=((li+1)/bootLines.length*100)+'%';
+    li++;setTimeout(showNextLine,li<bootLines.length-1?200:400);
+  } else {
+    setTimeout(()=>{bootScreen.style.transition='opacity 0.8s';bootScreen.style.opacity='0';setTimeout(()=>{bootScreen.style.display='none';initReveal()},800)},600);
+  }
+}
+setTimeout(showNextLine,300);
+
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  document.querySelectorAll('#hero .reveal').forEach(el=>el.classList.add('visible'));
+}
+window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50)});
+
+// ── Smart Chat Engine (no API, pure JS) ──────────────────────────────────────
+const KB = {
+  different: `What sets Tarun apart is that he builds **production-grade systems with real metrics** — not just demos. He ships complete pipelines with CI/CD, Redis caching, MLflow tracking, and adversarial red-teaming. Most junior AI engineers can't do that. He's proficient in LLM evaluation rigor, cost optimization, and observability — skills even senior engineers often lack.`,
+
+  projects: `Tarun has **5 flagship projects**:\n\n1️⃣ **CodePulse** — AI cinematic code walkthrough using LLaMA 4 via Groq, with animated execution, voice narration & 4 explanation levels.\n2️⃣ **LLM Evaluation Harness** — benchmarks GPT-4o vs Claude, Cohen's κ=0.81, 20+ red-team patterns, <4min CI detection.\n3️⃣ **Multi-Agent Code Review** — 3-agent LangGraph pipeline, found 23 issues + 4 critical CVEs autonomously.\n4️⃣ **RAG Ops Platform** — Qdrant vector search, drift detection, 75% Redis cache hit rate, p95/p99 SLO dashboard.\n5️⃣ **Autonomous Financial Research Agent** — 4-step reasoning chain, 60% cost reduction, SHA-256 audit trail, reports in <60s.`,
+
+  codepulse: `**CodePulse** is Tarun's most creative project — a full-stack AI web app that sends code to **LLaMA 4 via Groq** and returns a structured ExecutionScript JSON. It powers a live line-by-line animated walkthrough with variable tracking, call stack visualization, and **Web Speech API voice narration**. It features animated SVG character narrators (Batman/Spiderman/Superman), 4 explanation levels from ELI5 to Senior, a "Break Mode" for AI-driven bug injection, and is deployed on Vercel with Monaco Editor.`,
+
+  llmeval: `The **LLM Evaluation Harness** is a production-grade framework that benchmarks GPT-4o and Claude Sonnet across 50 MMLU prompts using ROUGE-L, BERTScore, and Exact Match with bootstrapped 95% confidence intervals. It reduced model regression detection from **days to under 4 minutes** per CI run. It also features an LLM-as-Judge ensemble with **Cohen's κ = 0.81** inter-rater agreement and 20+ adversarial red-team attack patterns including prompt injection, jailbreaks, and encoding bypasses.`,
+
+  multiagent: `The **Multi-Agent Code Review System** orchestrates a 3-agent LangGraph pipeline: a static analysis agent, an OWASP security scanner, and an LLM fix proposal agent. It autonomously identified **23 issues including 4 critical vulnerabilities** (SQL injection, hardcoded secrets, insecure deserialization, shell injection) in benchmark testing. It enforces per-review cost budgets under $0.50 and uses regex + AST analysis for the OWASP scanner at zero API cost.`,
+
+  rag: `The **RAG Ops Platform** is a production RAG pipeline with Qdrant vector search, deterministic n-gram embeddings (zero API cost), and cosine similarity **drift detection** that triggers automated re-indexing when embedding distribution shifts beyond threshold. It achieves a **75% Redis cache hit rate** on repeated queries and includes a real-time ops dashboard tracking p95/p99 latency SLOs, retrieval quality (Hit@5), and embedding drift score.`,
+
+  financial: `The **Autonomous Financial Research Agent** executes a 4-step structured reasoning chain: Market Context → Financial Analysis → Risk Assessment → Investment Thesis. It uses Yahoo Finance and DuckDuckGo APIs with per-query LLM cost budget enforcement at $0.50. It achieves **60% cost reduction** via Redis caching, generates complete company research reports in **under 60 seconds**, and maintains a full reproducibility audit trail with SHA-256 hashing per report.`,
+
+  stack: `Tarun's core tech stack:\n\n🧠 **LLM & GenAI**: Python 3.12, LangGraph, LangChain, LangSmith, OpenRouter, OpenAI API, Anthropic API, Prompt Engineering, LLM-as-Judge\n🔍 **Vector & RAG**: Qdrant, Semantic Search, Chunking Strategies, Drift Detection, Hit@k/MRR\n📊 **Evaluation**: ROUGE-L, BERTScore, Bootstrap CI, Cohen's Kappa, MLflow, Red-Teaming\n⚙️ **Infrastructure**: FastAPI, Docker, Redis, PostgreSQL, GitHub Actions, pytest, pydantic`,
+
+  experience: `Tarun has 2 internships:\n\n🏢 **AI Engineer Intern @ ZIDIO Development** (Jun–Aug 2025, Remote) — Built AI-powered Python automation pipelines, reducing data errors by **35–40%**. Designed Power BI dashboards saving ~4–5 hours/week.\n\n🏢 **GenAI & ML Intern @ Linux World Pvt. Ltd.** (Jul–Aug 2024, Jaipur) — Engineered ML pipelines and built an NLP chatbot + price predictor for 2 production projects.`,
+
+  hire: `Absolutely! Tarun is actively looking for **AI Engineer or Data Analyst roles** at funded startups. He's open to India-based, remote, or internationally sponsored positions. You can reach him at:\n\n📧 tarunsinghchauhan088@gmail.com\n💼 linkedin.com/in/tarunchauhanml\n⚡ github.com/TarunSinghChauhan`,
+
+  education: `Tarun holds a **B.Tech in Artificial Intelligence & Data Science** from Arya College of Engineering, Jaipur — graduated June 2026. He's also certified in Generative AI (Mastermind Outskill), Data Science & ML (Udemy), and Data Analytics (Google).`,
+
+  contact: `You can reach Tarun at:\n\n📧 **Email**: tarunsinghchauhan088@gmail.com\n💼 **LinkedIn**: linkedin.com/in/tarunchauhanml\n⚡ **GitHub**: github.com/TarunSinghChauhan\n\nHe's based in Jaipur, India and open to remote or relocation.`,
+
+  default: `Great question! Tarun is an AI Engineer specializing in LLM systems, RAG infrastructure, and multi-agent pipelines. He has 5 production projects, 2 internships, and a B.Tech in AI & Data Science. Try asking about his **projects**, **tech stack**, **experience**, or **how to hire him**! 🚀`
+};
+
+function smartReply(input) {
+  const q = input.toLowerCase();
+  if (/differ|unique|stand.?out|special|better|why hire|stand apart/.test(q)) return KB.different;
+  if (/codepulse|code.?pulse|llama|cinematic|walkthrough|voice|narrat/.test(q)) return KB.codepulse;
+  if (/eval|harness|red.?team|kappa|rouge|bert|regression|mmlu/.test(q)) return KB.llmeval;
+  if (/multi.?agent|code.?review|owasp|vuln|cve|security|injection/.test(q)) return KB.multiagent;
+  if (/rag|drift|qdrant|vector|retrieval|embed|cache hit/.test(q)) return KB.rag;
+  if (/financ|research.?agent|invest|yahoo|sha.?256|audit/.test(q)) return KB.financial;
+  if (/project|built|work|creat|portfolio|show/.test(q)) return KB.projects;
+  if (/stack|tech|language|tool|framework|python|langchain|langgraph|fastapi|docker|redis/.test(q)) return KB.stack;
+  if (/intern|experience|zidio|linux.?world|work.?histor/.test(q)) return KB.experience;
+  if (/hire|availab|job|role|opportun|recruit|open to/.test(q)) return KB.hire;
+  if (/educat|degree|btech|college|arya|certif/.test(q)) return KB.education;
+  if (/contact|email|linkedin|github|reach|connect/.test(q)) return KB.contact;
+  if (/best|favorite|top|impress|coolest/.test(q)) return KB.codepulse;
+  return KB.default;
+}
+
+function formatMsg(text) {
+  return text
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+function addMsg(text, isUser) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (isUser ? 'msg-user' : 'msg-ai');
+  div.innerHTML = `<div class="msg-avatar">${isUser ? 'You' : 'T'}</div><div class="msg-bubble">${isUser ? text : formatMsg(text)}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg msg-ai'; div.id = 'typing';
+  div.innerHTML = `<div class="msg-avatar">T</div><div class="msg-bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+  msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+let isLoading = false;
+function sendChat() {
+  if (isLoading) return;
+  const inp = document.getElementById('chat-input');
+  const q = inp.value.trim();
+  if (!q) return;
+  inp.value = ''; isLoading = true;
+  addMsg(q, true);
+  const t = showTyping();
+  // Simulate thinking delay
+  setTimeout(() => {
+    t.remove();
+    addMsg(smartReply(q), false);
+    isLoading = false;
+  }, 800 + Math.random() * 600);
+}
+
+function askQuestion(q) {
+  document.getElementById('chat-input').value = q;
+  sendChat();
+}
+</script>
+</body>
+</html>
